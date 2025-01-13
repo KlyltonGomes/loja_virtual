@@ -7,9 +7,8 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 public class LojaVirtualApplication {
 
 	public static void main(String[] args) {
-		System.out.println("Inciando projeto");
 		SpringApplication.run(LojaVirtualApplication.class, args);
-		System.out.println("Lets`GO");
+		System.out.println("Lets-Go");
 	}
 
 }
