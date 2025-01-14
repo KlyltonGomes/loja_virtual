@@ -1,6 +1,8 @@
 package com.BirdSoftware.Loja_Virtual.model;
 
+import com.BirdSoftware.Loja_Virtual.enums.TipoEndereco;
 import jakarta.persistence.*;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import java.io.Serializable;
 import java.util.Objects;
@@ -27,6 +29,9 @@ public class Endereco implements Serializable {
     @ManyToOne(targetEntity = Pessoa.class)
     @JoinColumn(name = "pessoa_id", nullable = false,foreignKey = @ForeignKey(value = ConstraintMode.CONSTRAINT,name = "pessoa_fk"))
     private Pessoa pessoa;
+
+    @Enumerated(EnumType.STRING)
+    private TipoEndereco tipoEndereco;
 
     public long getId() {
         return id;
