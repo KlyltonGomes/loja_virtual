@@ -23,9 +23,6 @@ public class Produto implements Serializable {
     @Column(columnDefinition = "TEXT",length = 2000)
     private String descricao;
 
-//    @OneToMany
-//    private NotaItemProduto notaItemProduto;
-
     private Double peso;
     private Double largura;
     private Double profundidade;
