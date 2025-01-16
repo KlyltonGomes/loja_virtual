@@ -37,10 +37,6 @@ public class NotaFiscalCompra implements Serializable {
     @JoinColumn(name = "pessoa_id", nullable = false,foreignKey = @ForeignKey(value = ConstraintMode.CONSTRAINT,name = "pessoa_fk"))
     private Pessoa pessoa;
 
-//    @OneToMany
-//    private NotaItemProduto notaItemProduto;
-
-
     public long getId() {
         return id;
     }
