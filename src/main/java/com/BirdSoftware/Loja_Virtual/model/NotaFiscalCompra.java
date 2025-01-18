@@ -17,19 +17,29 @@ public class NotaFiscalCompra implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "seq_nota_fiscal_compra")
     private long id;
-
+    @Column(nullable = false)
     private String numeroNota;
+
+    @Column(nullable = false)
     private String serie;
+
     private String descricaoObs;
+
+    @Column(nullable = false)
     private BigDecimal valorTotal;
+
     private BigDecimal desconto;
+
     private BigDecimal valorDesconto;
+
+    @Column(nullable = false)
     private BigDecimal valorIcms;
 
+    @Column(nullable = false)
     @Temporal(TemporalType.DATE)
     private Date dataCompra;
 
-    @ManyToOne(targetEntity = Pessoa.class)
+    @ManyToOne
     @JoinColumn(name = "conta_pagar_id", nullable = false,foreignKey = @ForeignKey(value = ConstraintMode.CONSTRAINT,name = "conta_pagar_fk"))
     private ContaPagar contaPagar;
 

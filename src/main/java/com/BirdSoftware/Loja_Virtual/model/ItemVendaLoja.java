@@ -25,6 +25,7 @@ public class ItemVendaLoja implements Serializable {
             foreignKey = @ForeignKey(value = ConstraintMode.CONSTRAINT,name = "vd_cp_loja_virt_fk"))
     private VendaCompraLojaVirtual vendaCompraLojaVirtual;
 
+    @Column(nullable = false)
     private Double quantidade;
 
     public long getId() {

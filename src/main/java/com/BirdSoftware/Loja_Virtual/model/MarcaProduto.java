@@ -15,7 +15,9 @@ public class MarcaProduto implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "seq_marca_produto")
     private long id;
-    private String marcaProduto;
+
+    @Column(nullable = false)
+    private String nomeDesc;
 
     public long getId() {
         return id;
@@ -25,12 +27,12 @@ public class MarcaProduto implements Serializable {
         this.id = id;
     }
 
-    public String getMarcaProduto() {
-        return marcaProduto;
+    public String getNomeDesc() {
+        return nomeDesc;
     }
 
-    public void setMarcaProduto(String marcaProduto) {
-        this.marcaProduto = marcaProduto;
+    public void setNomeDesc(String nomeDesc) {
+        this.nomeDesc = nomeDesc;
     }
 
     @Override

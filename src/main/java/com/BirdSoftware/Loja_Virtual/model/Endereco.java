@@ -2,7 +2,6 @@ package com.BirdSoftware.Loja_Virtual.model;
 
 import com.BirdSoftware.Loja_Virtual.enums.TipoEndereco;
 import jakarta.persistence.*;
-import org.springframework.beans.factory.annotation.Autowired;
 
 import java.io.Serializable;
 import java.util.Objects;
@@ -17,19 +16,31 @@ public class Endereco implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "seq_endereco")
     private long id;
+    @Column(nullable = false)
+    private String ruaLogra;
 
-    private String ruaLogradouro;
+    @Column(nullable = false)
     private String cep;
+
+    @Column(nullable = false)
     private String numero;
+
     private String complemento;
+
+    @Column(nullable = false)
     private String bairro;
+
+    @Column(nullable = false)
     private String uf;
+
+    @Column(nullable = false)
     private String cidade;
 
     @ManyToOne(targetEntity = Pessoa.class)
     @JoinColumn(name = "pessoa_id", nullable = false,foreignKey = @ForeignKey(value = ConstraintMode.CONSTRAINT,name = "pessoa_fk"))
     private Pessoa pessoa;
 
+    @Column(nullable = false)
     @Enumerated(EnumType.STRING)
     private TipoEndereco tipoEndereco;
 
@@ -41,12 +52,12 @@ public class Endereco implements Serializable {
         this.id = id;
     }
 
-    public String getRuaLogradouro() {
-        return ruaLogradouro;
+    public String getRuaLogra() {
+        return ruaLogra;
     }
 
-    public void setRuaLogradouro(String ruaLogradouro) {
-        this.ruaLogradouro = ruaLogradouro;
+    public void setRuaLogra(String ruaLogra) {
+        this.ruaLogra = ruaLogra;
     }
 
     public String getCep() {
