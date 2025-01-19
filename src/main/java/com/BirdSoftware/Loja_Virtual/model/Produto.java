@@ -36,6 +36,9 @@ public class Produto implements Serializable {
     private Double largura;
 
     @Column(nullable = false)
+    private Double altura;
+
+    @Column(nullable = false)
     private Double profundidade;
 
     @Column(nullable = false)
