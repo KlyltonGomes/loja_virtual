@@ -4,16 +4,25 @@ import com.BirdSoftware.Loja_Virtual.model.Acesso;
 import com.BirdSoftware.Loja_Virtual.service.AcessoService;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import org.springframework.stereotype.Controller;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
-@Controller
+@RestController
+@RequestMapping("/acesso")
 public class AcessoController {
 
     @Autowired
     private AcessoService acessoService;
 
-    public Acesso salvarAcesso(Acesso acesso){
 
-        return acessoService.save(acesso);
+    @PostMapping("/save")
+    public ResponseEntity<String> salvarAcesso(@RequestBody Acesso acesso){
+
+        Acesso AcessoSalvo = acessoService.save(acesso);
+        return new ResponseEntity<>("Sucesso na operacao: "+acesso.getId(),HttpStatus.CREATED);
     }
 }
