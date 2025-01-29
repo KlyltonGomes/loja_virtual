@@ -1,11 +1,18 @@
 package com.BirdSoftware.Loja_Virtual.security;
 
 
+import com.BirdSoftware.Loja_Virtual.service.ImplementacaoUserDetailsService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
+import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
+import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 
 import static org.springframework.security.config.Customizer.withDefaults;
@@ -14,13 +21,22 @@ import static org.springframework.security.config.Customizer.withDefaults;
 @EnableWebSecurity
 public class WebConfigSecurity {
 
+    final ImplementacaoUserDetailsService implementacaoUserDetailsService;
+
+
+    public WebConfigSecurity(ImplementacaoUserDetailsService implementacaoUserDetailsService) {
+        this.implementacaoUserDetailsService = implementacaoUserDetailsService;
+    }
+
+
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+
         http
                 // Configuração de autorização para rotas específicas
-               // .authorizeHttpRequests(authz -> authz
-                        //.requestMatchers("/acesso/**").hasRole("ADMIN") // Protege a rota /acesso/** com o papel "ADMIN"
-                        //.anyRequest().authenticated() // Exige autenticação para todas as outras rotas
+                // .authorizeHttpRequests(authz -> authz
+                //.requestMatchers("/acesso/**").hasRole("ADMIN") // Protege a rota /acesso/** com o papel "ADMIN"
+                //.anyRequest().authenticated() // Exige autenticação para todas as outras rotas
                 //)
                 // Configuração de autorização para rotas específicas
                 .authorizeHttpRequests(authz -> authz
@@ -39,19 +55,36 @@ public class WebConfigSecurity {
 //                .httpBasic(withDefaults());// Configura autenticação básica
 
 
-
         // Configuração de autorização para rotas específicas
 //                .authorizeHttpRequests(authz -> authz
 //                        .anyRequest().permitAll() // Permite todas as requisições sem autenticação
 //                );
 
-                // Desabilita o login
-                //.formLogin(form -> form.disable()) // Não permite o login (nem na interface)
+        // Desabilita o login
+        //.formLogin(form -> form.disable()) // Não permite o login (nem na interface)
 
-                // Configuração de logout
-                //.logout(logout -> logout.permitAll()); // Permite logout sem autenticação
+        // Configuração de logout
+        //.logout(logout -> logout.permitAll()); // Permite logout sem autenticação
 
         return http.build(); // Retorna a configuração do SecurityFilterChain
+    }
+
+    @Bean
+    public BCryptPasswordEncoder passwordEncoder() {
+        return new BCryptPasswordEncoder();
+    }
+
+    @Bean
+    public DaoAuthenticationProvider authenticationProvider() {
+        DaoAuthenticationProvider authProvider = new DaoAuthenticationProvider();
+        authProvider.setUserDetailsService(implementacaoUserDetailsService);
+        authProvider.setPasswordEncoder(passwordEncoder());
+        return authProvider;
+    }
+
+    @Bean
+    public AuthenticationManager authenticationManager(AuthenticationConfiguration authConfig) throws Exception {
+        return authConfig.getAuthenticationManager();
     }
 }
 
