@@ -7,12 +7,14 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.ProviderManager;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
-import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
-import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 
 import static org.springframework.security.config.Customizer.withDefaults;
@@ -21,71 +23,44 @@ import static org.springframework.security.config.Customizer.withDefaults;
 @EnableWebSecurity
 public class WebConfigSecurity {
 
-    final ImplementacaoUserDetailsService implementacaoUserDetailsService;
-
-
-    public WebConfigSecurity(ImplementacaoUserDetailsService implementacaoUserDetailsService) {
-        this.implementacaoUserDetailsService = implementacaoUserDetailsService;
-    }
-
+    @Autowired
+    private ImplementacaoUserDetailsService implementacaoUserDetailsService;
 
     @Bean
-    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-
+    public SecurityFilterChain securityFilterChain(HttpSecurity http, AuthenticationManager authenticationManager) throws Exception {
         http
-                // Configuração de autorização para rotas específicas
-                // .authorizeHttpRequests(authz -> authz
-                //.requestMatchers("/acesso/**").hasRole("ADMIN") // Protege a rota /acesso/** com o papel "ADMIN"
-                //.anyRequest().authenticated() // Exige autenticação para todas as outras rotas
-                //)
-                // Configuração de autorização para rotas específicas
-                .authorizeHttpRequests(authz -> authz
-                        .requestMatchers(HttpMethod.POST, "/acesso/save").authenticated()  // Permite POST na rota /acesso/save
-                        .anyRequest().permitAll()
-
-
+                .csrf(csrf -> csrf.disable()) // Desativa CSRF para APIs REST
+                .authorizeHttpRequests(auth -> auth
+                        .requestMatchers(HttpMethod.POST, "/login").permitAll() // Permite acesso público ao login
+                        .anyRequest().authenticated() // Exige autenticação para todas as outras requisições
                 )
                 .csrf(csrf -> csrf.disable())  // Desabilita a proteção CSRF na versão 6.x
-                .httpBasic(withDefaults()); // Habilita autenticação básica (se necessário);
+                .logout(logout -> logout
+                        .logoutUrl("/logout") // Configura a URL de logout
+                        .logoutSuccessUrl("/index") // Redireciona para o index após logout
+                )
 
-//                        .requestMatchers(HttpMethod.POST, "/acesso/save").permitAll()  // Permite POST na rota /acesso/save
-//                        .requestMatchers(HttpMethod.GET, "/acesso/findAll").permitAll()  // Permite POST na rota /acesso/save
-//                        //.anyRequest().permitAll()  // Permite todas as outras requisições sem autenticação
-//                )
-//                .httpBasic(withDefaults());// Configura autenticação básica
+                .sessionManagement(sess -> sess.sessionCreationPolicy(SessionCreationPolicy.STATELESS)) // API sem estado
+                .addFilter(new JWTLoginFilter("/login", authenticationManager)) // Adiciona o filtro de login
+                .addFilterBefore(new JwtApiAuthenticacaoFilter(), JWTLoginFilter.class) // Adiciona o filtro de autenticação JWT
+                .httpBasic(withDefaults()); // Mantém autenticação básica, se necessário
 
-
-        // Configuração de autorização para rotas específicas
-//                .authorizeHttpRequests(authz -> authz
-//                        .anyRequest().permitAll() // Permite todas as requisições sem autenticação
-//                );
-
-        // Desabilita o login
-        //.formLogin(form -> form.disable()) // Não permite o login (nem na interface)
-
-        // Configuração de logout
-        //.logout(logout -> logout.permitAll()); // Permite logout sem autenticação
-
-        return http.build(); // Retorna a configuração do SecurityFilterChain
+        return http.build();
     }
 
     @Bean
-    public BCryptPasswordEncoder passwordEncoder() {
+    public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
 
     @Bean
-    public DaoAuthenticationProvider authenticationProvider() {
-        DaoAuthenticationProvider authProvider = new DaoAuthenticationProvider();
-        authProvider.setUserDetailsService(implementacaoUserDetailsService);
-        authProvider.setPasswordEncoder(passwordEncoder());
-        return authProvider;
-    }
-
-    @Bean
-    public AuthenticationManager authenticationManager(AuthenticationConfiguration authConfig) throws Exception {
-        return authConfig.getAuthenticationManager();
+    public AuthenticationManager authenticationManager(UserDetailsService userDetailsService, PasswordEncoder passwordEncoder) throws Exception {
+        return new ProviderManager(new DaoAuthenticationProvider() {{
+            setUserDetailsService(userDetailsService);
+            setPasswordEncoder(passwordEncoder);
+        }});
     }
 }
+
 
 
