@@ -10,7 +10,7 @@ import jakarta.persistence.Table;
 @PrimaryKeyJoinColumn(name = "id")
 public class PessoaJuridica extends Pessoa {
 
-    private static final Long serialVersionUID = 1L;
+    private static final long serialVersionUID = 1L;
 
     @Column(nullable = false)
     private String cnpj;

@@ -6,10 +6,10 @@ import java.util.Objects;
 
 @Entity
 @Table(name = "pessoa_fisica")
-@PrimaryKeyJoinColumn(name = "id")
+@PrimaryKeyJoinColumn(name = "id")  // Herda a chave primária de Pessoa
 public class PessoaFisica extends Pessoa{
 
-    private static final Long serialVersionUID = 1L;
+    private static final long serialVersionUID = 1L;
 
     @Column(nullable = false)
     private String cpf;
