@@ -34,7 +34,7 @@ public class JWTLoginFilter extends UsernamePasswordAuthenticationFilter {
     public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response)
             throws AuthenticationException {
 
-        Usuario user = null;
+        Usuario user ;
         try {
             user = new ObjectMapper().readValue(request.getInputStream(), Usuario.class);
         } catch (IOException e) {
@@ -63,6 +63,7 @@ public class JWTLoginFilter extends UsernamePasswordAuthenticationFilter {
                                             FilterChain chain, Authentication authResult) throws IOException, ServletException {
         try {
             String username = authResult.getName();
+            //System.out.println(username);
             new JwttokenAutenticacaoService().addAuthentication(response, username);
         } catch (Exception e) {
             response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);

@@ -1,8 +1,10 @@
 package com.BirdSoftware.Loja_Virtual.controller;
 
+import com.BirdSoftware.Loja_Virtual.DTO.LoginDTO;
 import com.BirdSoftware.Loja_Virtual.model.Usuario;
 import com.BirdSoftware.Loja_Virtual.repository.UsuarioRepository;
 import com.BirdSoftware.Loja_Virtual.security.JwttokenAutenticacaoService;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -15,6 +17,7 @@ import org.springframework.web.bind.annotation.*;
 
 import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/auth")
@@ -33,22 +36,29 @@ public class AuthController {
     private PasswordEncoder passwordEncoder;
 
     @PostMapping("/login")
-    public ResponseEntity<?> autenticarUsuario(@RequestBody Usuario usuario, HttpServletResponse response) throws IOException {
+    @Transactional  // Garante que a transação esteja ativa ao acessar coleções lazy
+    public ResponseEntity<?> autenticarUsuario(@RequestBody LoginDTO loginDTO, HttpServletResponse response) throws IOException {
+
         try {
             // Busca o usuário no banco
-            Usuario usuarioBanco = usuarioRepository.findUserByLogin(usuario.getLogin());
-            if (usuarioBanco == null) {
+            Optional<Usuario> usuarioBancoOpt = usuarioRepository.findByLogin(loginDTO.getLogin());
+
+            if (usuarioBancoOpt.isEmpty()) {
+                System.out.println("Usuário não encontrado no banco!");
                 return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("{\"error\": \"Usuário não encontrado\"}");
             }
 
+            Usuario usuarioBanco = usuarioBancoOpt.get();
+
+
             // Compara a senha fornecida com a senha criptografada no banco
-            if (!passwordEncoder.matches(usuario.getSenha(), usuarioBanco.getSenha())) {
+            if (!passwordEncoder.matches(loginDTO.getSenha(), usuarioBanco.getSenha())) {
                 return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("{\"error\": \"Senha incorreta\"}");
             }
 
             // Autentica o usuário e gera o token
             Authentication authentication = authenticationManager.authenticate(
-                    new UsernamePasswordAuthenticationToken(usuario.getLogin(), usuario.getSenha())
+                    new UsernamePasswordAuthenticationToken(loginDTO.getLogin(), loginDTO.getSenha())
             );
 
             User user = (User) authentication.getPrincipal();

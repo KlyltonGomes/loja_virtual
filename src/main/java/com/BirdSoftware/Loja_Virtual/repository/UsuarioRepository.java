@@ -15,16 +15,10 @@ import java.util.Optional;
 @Repository
 public interface UsuarioRepository extends JpaRepository<Usuario, Long> {
 
-    @Query(value = "select u from Usuario u where u.login= ?1")
-    Usuario findUserByLogin(String login);
 
-    @Modifying
-    @Transactional
-    @Query("UPDATE Usuario u SET u.senha = ?1 WHERE u.login = ?2")
-    void atualizarSenha(String novaSenha, String login);  // Atualiza diretamente no banco
+    @Query("SELECT u FROM Usuario u JOIN FETCH u.acessos WHERE LOWER(u.login) = LOWER(:login)")
+    Optional<Usuario> findUserByLogin(@Param("login") String login);
 
-    // Método para buscar usuário por login
-    //Optional<Usuario> findByLogin(String login);
 
     @Query("SELECT u FROM Usuario u WHERE LOWER(u.login) = LOWER(:login)")
     Optional<Usuario> findByLogin(@Param("login") String login);

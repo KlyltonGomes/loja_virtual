@@ -8,7 +8,9 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
+/*Essa classe é resposavel por carregar o usuario*/
 @Service
 public class ImplementacaoUserDetailsService implements UserDetailsService {
 
@@ -16,14 +18,10 @@ public class ImplementacaoUserDetailsService implements UserDetailsService {
     private UsuarioRepository usuarioRepository;
 
     @Override
+    @Transactional(readOnly = true) // GARANTE QUE A SESSÃO FIQUE ABERTA
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-
-        Usuario usuario = usuarioRepository.findUserByLogin(username); // recebeo login para consulta
-
-        if (usuario == null){
-            throw new UsernameNotFoundException("Usuario não foi encontrado");
-        }
-
-        return new User(usuario.getLogin(), usuario.getPassword(), usuario.getAuthorities());
+        return usuarioRepository.findUserByLogin(username)
+                .orElseThrow(() -> new UsernameNotFoundException("Usuário não encontrado"));
     }
 }
+
