@@ -1,6 +1,7 @@
 package com.BirdSoftware.Loja_Virtual.model;
 
 
+import com.BirdSoftware.Loja_Virtual.enums.Role;
 import jakarta.persistence.*;
 import org.springframework.security.core.GrantedAuthority;
 
@@ -15,12 +16,13 @@ public class Acesso implements GrantedAuthority {
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "seq_acesso")
     private Long id;
 
-    @Column(nullable = false)
-    private String descricao; // acesso ex: ROLE_ADMIN ou ROLE_SECRETARIO
+    @Column(nullable = false, unique = true)
+    @Enumerated(EnumType.STRING) //preciso criar um enum
+    private Role descricao; // acesso ex: ROLE_ADMIN ou ROLE_SECRETARIO
 
     @Override
     public String getAuthority() {
-        return this.descricao;
+        return this.descricao.name();
     }
 
     public Long getId() {
@@ -32,12 +34,13 @@ public class Acesso implements GrantedAuthority {
     }
 
     public String getDescricao() {
-        return descricao;
+        return descricao.name();
     }
 
-    public void setDescricao(String descricao) {
+    public void setDescricao(Role descricao) {
         this.descricao = descricao;
     }
+
 
     @Override
     public boolean equals(Object o) {

@@ -1,5 +1,6 @@
 package com.BirdSoftware.Loja_Virtual.model;
 
+import com.BirdSoftware.Loja_Virtual.DTO.PessoaFisica;
 import com.BirdSoftware.Loja_Virtual.enums.TipoEndereco;
 import jakarta.persistence.*;
 
@@ -38,11 +39,32 @@ public class Endereco implements Serializable {
 
     @ManyToOne(targetEntity = Pessoa.class)
     @JoinColumn(name = "pessoa_id", nullable = false,foreignKey = @ForeignKey(value = ConstraintMode.CONSTRAINT,name = "pessoa_fk"))
-    private Pessoa pessoa;
+    private PessoaFisica pessoa;
 
     @Column(nullable = false)
     @Enumerated(EnumType.STRING)
     private TipoEndereco tipoEndereco;
+
+    public TipoEndereco getTipoEndereco() {
+        return tipoEndereco;
+    }
+
+    @ManyToOne(targetEntity = PessoaJuridica.class)
+    @JoinColumn(name = "empresa_id", nullable = false,
+            foreignKey = @ForeignKey(value = ConstraintMode.CONSTRAINT,name = "empresa_fk"))
+    private PessoaJuridica empresa;
+
+    public PessoaJuridica getEmpresa() {
+        return empresa;
+    }
+
+    public void setEmpresa(PessoaJuridica empresa) {
+        this.empresa = empresa;
+    }
+
+    public void setTipoEndereco(TipoEndereco tipoEndereco) {
+        this.tipoEndereco = tipoEndereco;
+    }
 
     public long getId() {
         return id;
@@ -108,11 +130,11 @@ public class Endereco implements Serializable {
         this.cidade = cidade;
     }
 
-    public Pessoa getPessoa() {
+    public PessoaFisica getPessoa() {
         return pessoa;
     }
 
-    public void setPessoa(Pessoa pessoa) {
+    public void setPessoa(PessoaFisica pessoa) {
         this.pessoa = pessoa;
     }
 
@@ -128,4 +150,5 @@ public class Endereco implements Serializable {
     public int hashCode() {
         return Objects.hashCode(id);
     }
+
 }

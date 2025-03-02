@@ -55,6 +55,25 @@ public class Produto implements Serializable {
 
     private Integer qtdClique;
 
+    public Double getAltura() {return altura;}
+
+    @ManyToOne(targetEntity = PessoaJuridica.class)
+    @JoinColumn(name = "empresa_id", nullable = false,
+            foreignKey = @ForeignKey(value = ConstraintMode.CONSTRAINT,name = "empresa_fk"))
+    private PessoaJuridica empresa;
+
+    public PessoaJuridica getEmpresa() {
+        return empresa;
+    }
+
+    public void setEmpresa(PessoaJuridica empresa) {
+        this.empresa = empresa;
+    }
+
+    public void setAltura(Double altura) {
+        this.altura = altura;
+    }
+
     public long getId() {
         return id;
     }

@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
+import java.time.LocalDate;
 import java.util.*;
 
 @Entity
@@ -18,7 +19,7 @@ public class Usuario implements UserDetails {
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "seq_usuario")
     private Long id;
 
-    @Column(nullable = false)
+    @Column(nullable = false, unique = true)
     private String login;
 
     @Column(nullable = false)
@@ -26,7 +27,7 @@ public class Usuario implements UserDetails {
 
     @Column(nullable = false)
     @Temporal(TemporalType.DATE)
-    private Date dataAtualSenha;
+    private LocalDate dataAtualSenha;
 
     @OneToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "usuarios_acesso", uniqueConstraints = @UniqueConstraint(columnNames = {"usuario_id","acesso_id"} ,
@@ -38,7 +39,8 @@ public class Usuario implements UserDetails {
     private List<Acesso> acessos ;
 
     @ManyToOne(targetEntity = Pessoa.class)
-    @JoinColumn(name = "pessoa_id", nullable = false,foreignKey = @ForeignKey(value = ConstraintMode.CONSTRAINT,name = "pessoa_fk"))
+    @JoinColumn(name = "pessoa_id", nullable = false,
+            foreignKey = @ForeignKey(value = ConstraintMode.CONSTRAINT,name = "pessoa_fk"))
     private Pessoa pessoa;
 
     public Pessoa getPessoa() {
@@ -89,11 +91,11 @@ public class Usuario implements UserDetails {
         this.senha = senha;
     }
 
-    public Date getDataAtualSenha() {
+    public LocalDate getDataAtualSenha() {
         return dataAtualSenha;
     }
 
-    public void setDataAtualSenha(Date dataAtualSenha) {
+    public void setDataAtualSenha(LocalDate dataAtualSenha) {
         this.dataAtualSenha = dataAtualSenha;
     }
 

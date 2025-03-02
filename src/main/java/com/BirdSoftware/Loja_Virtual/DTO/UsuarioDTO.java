@@ -1,14 +1,14 @@
 package com.BirdSoftware.Loja_Virtual.DTO;
 
-public class LoginDTO {
+public class UsuarioDTO {
 
     private String login;
     private String senha;
 
-    public LoginDTO() {
-    }
 
-    public LoginDTO(String login, String senha) {
+    public UsuarioDTO() {}
+
+    public UsuarioDTO(String login, String senha) {
         this.login = login;
         this.senha = senha;
     }
@@ -28,4 +28,5 @@ public class LoginDTO {
     public void setSenha(String senha) {
         this.senha = senha;
     }
+
 }
