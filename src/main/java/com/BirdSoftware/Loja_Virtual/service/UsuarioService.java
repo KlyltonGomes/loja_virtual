@@ -12,6 +12,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -40,8 +43,15 @@ public class UsuarioService {
         Usuario usuario = new Usuario();
         usuario.setLogin(usuarioDTO.getLogin());
         usuario.setSenha(passwordEncoder.encode(usuarioDTO.getSenha())); // Criptografar a senha
+        usuario.setDataAtualSenha(LocalDate.now());
 
+        Acesso acesso = new Acesso();
+        acesso.setDescricao(Role.ROLE_USER);
+        acessoRepository.save(acesso); //salvar antes de associar
 
+        List<Acesso> listaAcesso = new ArrayList<>();
+        listaAcesso.add(acesso);
+        usuario.setAcessos(listaAcesso);
 
         usuarioRepository.save(usuario);
 

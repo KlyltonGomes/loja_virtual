@@ -14,7 +14,6 @@ public class Usuario implements UserDetails {
 
     private static final long serialVersionUID = 1L;
 
-
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "seq_usuario")
     private Long id;
@@ -39,7 +38,7 @@ public class Usuario implements UserDetails {
     private List<Acesso> acessos ;
 
     @ManyToOne(targetEntity = Pessoa.class)
-    @JoinColumn(name = "pessoa_id", nullable = false,
+    @JoinColumn(name = "pessoa_id", nullable = true,
             foreignKey = @ForeignKey(value = ConstraintMode.CONSTRAINT,name = "pessoa_fk"))
     private Pessoa pessoa;
 

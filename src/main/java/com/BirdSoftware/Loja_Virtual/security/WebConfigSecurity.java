@@ -30,11 +30,14 @@ public class WebConfigSecurity {
                 .csrf(csrf -> csrf.disable())  // Desabilita CSRF
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/auth/login").permitAll()  // Permite acesso à URL de login sem autenticação
+                        .requestMatchers("/user/cadastrar").permitAll() // Permite acesso público ao cadastro
+
                         //.requestMatchers("/usuario/**").permitAll() // Cadastro público
                         //.requestMatchers("/admin/**").hasRole("ADMIN") Apenas Admin acessae "/admin"
                         //.requestMatchers("/usuario/**").hasRole("/usuario") Admin e usuario acessam ("/usuario")
                         //.requestMatchers("/loja/**").hasRole("USER")  Apenas usuários logados
-                        .anyRequest().authenticated()  // Exige autenticação para outras URLs
+                        //.anyRequest().authenticated()
+                        .anyRequest().permitAll()// Exige autenticação para outras URLs
                 )
                 .sessionManagement(session -> session
                         .sessionCreationPolicy(SessionCreationPolicy.STATELESS)  // Usar stateless (sem sessão)
