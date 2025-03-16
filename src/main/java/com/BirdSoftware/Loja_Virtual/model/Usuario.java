@@ -28,14 +28,22 @@ public class Usuario implements UserDetails {
     @Temporal(TemporalType.DATE)
     private LocalDate dataAtualSenha;
 
-    @OneToMany(fetch = FetchType.EAGER)
-    @JoinTable(name = "usuarios_acesso", uniqueConstraints = @UniqueConstraint(columnNames = {"usuario_id","acesso_id"} ,
-    name = "unique_acesso_user"),
-    joinColumns = @JoinColumn(name = "usuario_id",referencedColumnName = "id", table = "usuario",
-            unique = false, foreignKey = @ForeignKey(name = "usuario_fk", value = ConstraintMode.CONSTRAINT)),
-    inverseJoinColumns = @JoinColumn(name = "acesso_id", unique = false, referencedColumnName = "id", table = "acesso",
-    foreignKey = @ForeignKey(name = "acesso_fk", value = ConstraintMode.CONSTRAINT)))
-    private List<Acesso> acessos ;
+//    @OneToMany(fetch = FetchType.EAGER)
+//    @JoinTable(name = "usuarios_acesso", uniqueConstraints = @UniqueConstraint(columnNames = {"usuario_id","acesso_id"} ,
+//    name = "unique_acesso_user"),
+//    joinColumns = @JoinColumn(name = "usuario_id",referencedColumnName = "id", table = "usuario",
+//            unique = false, foreignKey = @ForeignKey(name = "usuario_fk", value = ConstraintMode.CONSTRAINT)),
+//    inverseJoinColumns = @JoinColumn(name = "acesso_id", unique = false, referencedColumnName = "id", table = "acesso",
+//    foreignKey = @ForeignKey(name = "acesso_fk", value = ConstraintMode.CONSTRAINT)))
+//   private List<Acesso> acessos ;
+    // Alteração aqui: relacionamento ManyToMany
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(name = "usuarios_acesso",
+            joinColumns = @JoinColumn(name = "usuario_id"),
+            inverseJoinColumns = @JoinColumn(name = "acesso_id"),
+            uniqueConstraints = @UniqueConstraint(columnNames = {"usuario_id", "acesso_id"},
+                    name = "unique_acesso_user"))
+    private List<Acesso> acessos;
 
     @ManyToOne(targetEntity = Pessoa.class)
     @JoinColumn(name = "pessoa_id", nullable = true,

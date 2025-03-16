@@ -16,9 +16,9 @@ public class Acesso implements GrantedAuthority {
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "seq_acesso")
     private Long id;
 
-    @Column(nullable = false, unique = true)
+    @Column(nullable = false)//, unique = true)
     @Enumerated(EnumType.STRING) //preciso criar um enum
-    private Role descricao; // acesso ex: ROLE_ADMIN ou ROLE_SECRETARIO
+    private Role descricao; // acesso ex: ROLE_ADMIN ou ROLE_USER
 
     @Override
     public String getAuthority() {
