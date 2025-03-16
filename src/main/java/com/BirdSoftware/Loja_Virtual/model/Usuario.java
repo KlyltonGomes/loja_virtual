@@ -50,6 +50,11 @@ public class Usuario implements UserDetails {
             foreignKey = @ForeignKey(value = ConstraintMode.CONSTRAINT,name = "pessoa_fk"))
     private Pessoa pessoa;
 
+    // Pode adicionar campos que ajudem a identificar o tipo de pessoa: Física ou Jurídica
+    @Column(nullable = true)
+    private Boolean isPessoaJuridica; // Se for Pessoa Jurídica, essa flag pode ser marcada como 'true'
+
+
     public Pessoa getPessoa() {
         return pessoa;
     }

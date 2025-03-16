@@ -9,6 +9,7 @@ public class PessoaDTO {
     private String nome;
     private String email;
     private String telefone;
+
     private List<EnderecoDTO> enderecos;
 
     public String getNome() {

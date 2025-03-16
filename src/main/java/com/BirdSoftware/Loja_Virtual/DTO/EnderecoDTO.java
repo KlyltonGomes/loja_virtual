@@ -1,7 +1,6 @@
 package com.BirdSoftware.Loja_Virtual.DTO;
 
 
-
 public class EnderecoDTO{
 
     private String logradouro;

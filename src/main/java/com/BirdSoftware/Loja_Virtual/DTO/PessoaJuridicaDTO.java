@@ -1,6 +1,6 @@
 package com.BirdSoftware.Loja_Virtual.DTO;
 
-public class PessoaJuridica extends PessoaDTO{
+public class PessoaJuridicaDTO extends PessoaDTO{
 
     private String cnpj;
     private String inscEstadual;

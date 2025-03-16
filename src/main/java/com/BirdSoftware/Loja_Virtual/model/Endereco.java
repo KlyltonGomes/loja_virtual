@@ -37,22 +37,25 @@ public class Endereco implements Serializable {
     @Column(nullable = false)
     private String cidade;
 
+//    @ManyToOne(targetEntity = Pessoa.class)
+//    @JoinColumn(name = "pessoa_id", nullable = true, foreignKey = @ForeignKey(value = ConstraintMode.CONSTRAINT,name = "pessoa_fk"))
+//    private PessoaFisica pessoa;
+
     @ManyToOne(targetEntity = Pessoa.class)
-    @JoinColumn(name = "pessoa_id", nullable = false,foreignKey = @ForeignKey(value = ConstraintMode.CONSTRAINT,name = "pessoa_fk"))
-    private PessoaFisica pessoa;
+    @JoinColumn(name = "pessoa_id", nullable = true, foreignKey = @ForeignKey(value = ConstraintMode.CONSTRAINT,name = "pessoa_fk"))
+    private Pessoa pessoa;
 
     @Column(nullable = false)
     @Enumerated(EnumType.STRING)
     private TipoEndereco tipoEndereco;
 
-    public TipoEndereco getTipoEndereco() {
-        return tipoEndereco;
-    }
-
     @ManyToOne(targetEntity = PessoaJuridica.class)
-    @JoinColumn(name = "empresa_id", nullable = false,
+    @JoinColumn(name = "empresa_id", nullable = true,
             foreignKey = @ForeignKey(value = ConstraintMode.CONSTRAINT,name = "empresa_fk"))
     private PessoaJuridica empresa;
+
+
+    public TipoEndereco getTipoEndereco() {return tipoEndereco;}
 
     public PessoaJuridica getEmpresa() {
         return empresa;
@@ -130,11 +133,11 @@ public class Endereco implements Serializable {
         this.cidade = cidade;
     }
 
-    public PessoaFisica getPessoa() {
+    public Pessoa getPessoa() {
         return pessoa;
     }
 
-    public void setPessoa(PessoaFisica pessoa) {
+    public void setPessoa(Pessoa pessoa) {
         this.pessoa = pessoa;
     }
 
