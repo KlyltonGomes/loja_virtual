@@ -1,11 +1,14 @@
 package com.BirdSoftware.Loja_Virtual.DTO;
 
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 public class EnderecoDTO{
 
     private String logradouro;
     private String numero;
     private String bairro;
+    @JsonProperty("localidade") //mapeamento automatico
     private String cidade;
     private String estado;
     private String cep;
