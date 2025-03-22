@@ -124,7 +124,20 @@
             <artifactId>velocity-tools</artifactId>
             <version>2.0</version>
         </dependency>
-    </dependencies>
+
+		<!-- Starter do Spring Boot para e-mails -->
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-mail</artifactId>
+		</dependency>
+		<!-- Implementação do Jakarta Mail -->
+		<dependency>
+			<groupId>org.eclipse.angus</groupId>
+			<artifactId>jakarta.mail</artifactId>
+			<version>2.0.1</version>
+		</dependency>
+
+	</dependencies>
 
 	<build>
 		<plugins>

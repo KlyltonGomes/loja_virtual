@@ -1,9 +1,7 @@
 package com.BirdSoftware.Loja_Virtual.DTO;
 
-
 import com.BirdSoftware.Loja_Virtual.enums.TipoEndereco;
 import com.fasterxml.jackson.annotation.JsonFormat;
-import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class EnderecoDTO{
 

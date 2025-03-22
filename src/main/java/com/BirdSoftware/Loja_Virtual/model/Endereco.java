@@ -2,6 +2,7 @@ package com.BirdSoftware.Loja_Virtual.model;
 
 import com.BirdSoftware.Loja_Virtual.DTO.PessoaFisica;
 import com.BirdSoftware.Loja_Virtual.enums.TipoEndereco;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 
 import java.io.Serializable;
@@ -41,6 +42,8 @@ public class Endereco implements Serializable {
 //    @JoinColumn(name = "pessoa_id", nullable = true, foreignKey = @ForeignKey(value = ConstraintMode.CONSTRAINT,name = "pessoa_fk"))
 //    private PessoaFisica pessoa;
 
+    // Ignora a serialização da lista de Endereços para evitar o loop
+    @JsonIgnore
     @ManyToOne(targetEntity = Pessoa.class)
     @JoinColumn(name = "pessoa_id", nullable = true, foreignKey = @ForeignKey(value = ConstraintMode.CONSTRAINT,name = "pessoa_fk"))
     private Pessoa pessoa;
