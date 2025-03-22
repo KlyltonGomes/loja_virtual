@@ -1,6 +1,8 @@
 package com.BirdSoftware.Loja_Virtual.DTO;
 
 
+import com.BirdSoftware.Loja_Virtual.enums.TipoEndereco;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class EnderecoDTO{
@@ -8,11 +10,23 @@ public class EnderecoDTO{
     private String logradouro;
     private String numero;
     private String bairro;
-    @JsonProperty("localidade") //mapeamento automatico
+    //@JsonProperty("localidade") //mapeamento automatico
     private String cidade;
     private String estado;
     private String cep;
     private String complemento;
+
+    /*Garante que o JSON aceite string em vez de números*/
+    @JsonFormat(shape = JsonFormat.Shape.STRING)
+    private TipoEndereco tipoEndereco;
+
+    public TipoEndereco getTipoEndereco() {
+        return tipoEndereco;
+    }
+
+    public void setTipoEndereco(TipoEndereco tipoEndereco) {
+        this.tipoEndereco = tipoEndereco;
+    }
 
     public String getLogradouro() {
         return logradouro;
