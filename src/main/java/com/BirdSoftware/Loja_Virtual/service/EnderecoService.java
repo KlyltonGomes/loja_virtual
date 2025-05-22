@@ -14,7 +14,7 @@ import org.springframework.stereotype.Service;
 import java.util.Optional;
 
 @Service
-public class EndercoService {
+public class EnderecoService {
 
     @Autowired
     private EnderecoRepository enderecoRepository;

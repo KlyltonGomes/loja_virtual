@@ -18,7 +18,7 @@ public class PessoaJuridicaController {
     private PessoaJuridicaService pessoaJuridicaService;
 
     @PostMapping("/pj")
-    public ResponseEntity<ResponseEntity<?>> cadastrarUsuarioPJ(@RequestBody PessoaJuridicaDTO pessoaJuridicaDTO) {
+    public ResponseEntity<?> cadastrarUsuarioPJ(@RequestBody PessoaJuridicaDTO pessoaJuridicaDTO) {
 
         ResponseEntity<?> resultadoPJ = pessoaJuridicaService.cadastraPessoaJuridica(pessoaJuridicaDTO);
         return ResponseEntity.status(HttpStatus.CREATED).body(resultadoPJ);

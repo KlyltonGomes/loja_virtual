@@ -1,10 +1,11 @@
 package com.BirdSoftware.Loja_Virtual.DTO;
 
-import java.util.Date;
+import java.time.LocalDate;
 
-public class PessoaFisica extends PessoaDTO{
+
+public class PessoaFisicaDTO extends PessoaDTO{
     private String cpf;
-    private Date dataNascimento;
+    private LocalDate dataNascimento;
 
     public String getCpf() {
         return cpf;
@@ -14,11 +15,11 @@ public class PessoaFisica extends PessoaDTO{
         this.cpf = cpf;
     }
 
-    public Date getDataNascimento() {
+    public LocalDate getDataNascimento() {
         return dataNascimento;
     }
 
-    public void setDataNascimento(Date dataNascimento) {
+    public void setDataNascimento(LocalDate dataNascimento) {
         this.dataNascimento = dataNascimento;
     }
 }
